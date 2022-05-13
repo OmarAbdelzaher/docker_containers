@@ -1,5 +1,5 @@
 """
-ASGI config for cyberdefproj project.
+ASGI config for dockerproj project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cyberdefproj.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dockerproj.settings')
 
 application = get_asgi_application()

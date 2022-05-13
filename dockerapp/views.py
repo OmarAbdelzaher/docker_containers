@@ -2,12 +2,20 @@ from django.shortcuts import render, redirect, get_object_or_404, reverse
 
 from .models import *
 from .forms import *
+from .serializers import *
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 
 from django.views.decorators.csrf import csrf_exempt
+from django.http import  Http404
+
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from .tasks import create_container
 
 def registerpage(request):
     # checking if the user is already logged or not 
@@ -71,3 +79,36 @@ def logoutpage(request):
 
 def landing(request):
     return render(request, 'landing.html')
+
+class ContainerList(APIView):
+    def get(self,request):
+        containers = Container.objects.all()
+        serializer = ContainersSerializer(containers,many=True)
+        return Response(serializer.data)
+    
+    @csrf_exempt    
+    def post(self,request):
+        if request.data["process"] == "create":
+            postdata = {
+                "image_name" : request.data["image_name"],
+                "image_tag" : request.data["image_tag"],
+                "owner" : request.user.id
+            }
+            create_container.delay(postdata)
+        
+        elif request.data["process"] == "destroy":
+            postdata = {
+                "cont_id" : request.data["cont_id"]
+            }
+            destroy_container.delay(postdata)
+        
+        else:
+            print("noooooooooo")
+            
+        serializer = ContainersSerializer(data=postdata)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    

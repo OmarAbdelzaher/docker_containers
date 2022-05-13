@@ -31,19 +31,38 @@
 		 
 		}
 	</style>
-
+	<div id="csrf">
+		{% csrf_token %}
+	</div>
 	<script>
 		jQuery(function($, undefined) {
 
 			$('body').terminal({
-				create:function(name){
-					console.log(name)
+				create:function(img_name,img_tag){
+					$.ajax({
+						headers: {'X-CSRFToken': document.getElementById('csrf').querySelector('input').value},
+						type: "POST", 
+						url: "http://0.0.0.0:8000/docker_app/containers/",
+						data: {
+							process: "create",
+							image_name:img_name,
+							image_tag:img_tag
+						}, 
+					})
 				},
 				destroy:function(id){
-					console.log(id)
+					$.ajax({
+						headers: {'X-CSRFToken': document.getElementById('csrf').querySelector('input').value},
+						type: "POST", 
+						url: "http://0.0.0.0:8000/docker_app/containers/",
+						data: {
+							process:"destroy",
+							cont_id:id,
+						}, 
+					})
 				},
 			}, {
-				greetings: 'Enter "create container_name" to create a container or "destroy container_id" to destroy a container',
+				greetings: 'Enter "create image_name image_tag" to create a container or "destroy container_id" to destroy a container... Given that the image name is "cyberdefproj" and the tag name is "latest"',
 				name: 'docker_demo',
 				prompt: 'docker> ',
 				height: 500,

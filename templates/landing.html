@@ -1,0 +1,57 @@
+{% include 'header.html' %} 
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    
+<head>
+	<title>Docker-Landing</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css" rel="stylesheet"/>
+	<script src="https://unpkg.com/js-polyfills/keyboard.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/jcubic/static/js/wcwidth.js"></script>
+
+	<link rel="stylesheet" href="{% static '/css/landing.css/' %}">
+</head>
+<body>
+	<style>
+		.terminal {
+		 --color: blue;
+		 --background: rgb(201, 200, 200);
+		 --animation: terminal-bar;
+		 margin: auto;
+		 width: 60%;
+		 border: 3px solid #000000;
+		 border-radius: 20px;
+		 padding: 10px;
+		 
+		}
+	</style>
+
+	<script>
+		jQuery(function($, undefined) {
+
+			$('body').terminal({
+				create:function(name){
+					console.log(name)
+				},
+				destroy:function(id){
+					console.log(id)
+				},
+			}, {
+				greetings: 'Enter "create container_name" to create a container or "destroy container_id" to destroy a container',
+				name: 'docker_demo',
+				prompt: 'docker> ',
+				height: 500,
+				color: 'blue',
+				clear:true,
+				history:true,
+				exit:true,
+			});
+		});
+	</script>
+</body>

@@ -102,8 +102,6 @@ class ContainerList(APIView):
             }
             destroy_container.delay(postdata)
         
-        else:
-            print("noooooooooo")
             
         serializer = ContainersSerializer(data=postdata)
         

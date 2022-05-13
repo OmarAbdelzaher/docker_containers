@@ -15,7 +15,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .tasks import create_container
+from .tasks import create_container, destroy_container
 
 def registerpage(request):
     # checking if the user is already logged or not 

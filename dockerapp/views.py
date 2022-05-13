@@ -82,13 +82,13 @@ def landing(request):
 
 class ContainerList(APIView):
     def get(self,request):
-        containers = Container.objects.all()
+        containers = DockerContainer.objects.all()
         serializer = ContainersSerializer(containers,many=True)
         return Response(serializer.data)
     
     @csrf_exempt    
     def post(self,request):
-        if request.data["process"] == "create":
+        if str(request.data["process"]) == "create":
             postdata = {
                 "image_name" : request.data["image_name"],
                 "image_tag" : request.data["image_tag"],
@@ -96,12 +96,11 @@ class ContainerList(APIView):
             }
             create_container.delay(postdata)
         
-        elif request.data["process"] == "destroy":
+        elif str(request.data["process"]) == "destroy":
             postdata = {
                 "cont_id" : request.data["cont_id"]
             }
             destroy_container.delay(postdata)
-        
             
         serializer = ContainersSerializer(data=postdata)
         

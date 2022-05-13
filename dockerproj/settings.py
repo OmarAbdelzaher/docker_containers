@@ -132,9 +132,12 @@ STATICFILES_DIRS = (
 
 CELERY_BROKER_URL = 'amqp://127.0.0.1'
 CELERY_TIMEZONE = 'UTC'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
 CELERY_BEAT_SCHEDULE = {
     "SendScheduledEmails":{
-        'task': 'docker_cont_prov_dest.tasks.send_scheduled_emails',
+        'task': 'dockerapp.tasks.send_scheduled_emails',
         'schedule': 10, # Every 10 secs
         # 'schedule': crontab(minute="*/30") # Every 30 mins
     }

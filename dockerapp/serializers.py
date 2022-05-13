@@ -12,6 +12,6 @@ class UserAccountSerializer(serializers.ModelSerializer):
 class ContainersSerializer(serializers.ModelSerializer):
     print(User)
     class Meta:
-        model = Container
+        model = DockerContainer
         fields = ['id','owner','image_name','image_tag']
         
